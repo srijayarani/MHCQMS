@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Container,
   Paper,
@@ -20,10 +20,13 @@ import {
   CardContent,
   Divider,
 } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { PersonAdd as PersonAddIcon, Assessment as AssessmentIcon } from '@mui/icons-material';
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {
+  PersonAdd as PersonAddIcon,
+  Assessment as AssessmentIcon,
+} from '@mui/icons-material';
 import axios from 'axios';
 
 const PatientRegistration = () => {
@@ -49,32 +52,36 @@ const PatientRegistration = () => {
 
   const calculateRiskLevel = () => {
     let riskScore = 0;
-    
+
     if (formData.smoking) riskScore += 2;
     if (formData.diabetes) riskScore += 2;
     if (formData.hypertension) riskScore += 2;
     if (formData.obesity) riskScore += 1;
     if (formData.family_history) riskScore += 1;
-    
+
     if (formData.date_of_birth) {
-      const age = new Date().getFullYear() - formData.date_of_birth.getFullYear();
+      const age =
+        new Date().getFullYear() - formData.date_of_birth.getFullYear();
       if (age > 60) riskScore += 2;
       else if (age > 40) riskScore += 1;
     }
-    
-    if (riskScore >= 5) return { level: 'high', color: 'error' };
-    if (riskScore >= 3) return { level: 'medium', color: 'warning' };
-    return { level: 'low', color: 'success' };
+
+    if (riskScore >= 5) return {level: 'high', color: 'error'};
+    if (riskScore >= 3) return {level: 'medium', color: 'warning'};
+    return {level: 'low', color: 'success'};
   };
 
   const validateForm = () => {
     const newErrors = {};
-    
-    if (!formData.first_name.trim()) newErrors.first_name = 'First name is required';
-    if (!formData.last_name.trim()) newErrors.last_name = 'Last name is required';
-    if (!formData.date_of_birth) newErrors.date_of_birth = 'Date of birth is required';
+
+    if (!formData.first_name.trim())
+      newErrors.first_name = 'First name is required';
+    if (!formData.last_name.trim())
+      newErrors.last_name = 'Last name is required';
+    if (!formData.date_of_birth)
+      newErrors.date_of_birth = 'Date of birth is required';
     if (!formData.gender) newErrors.gender = 'Gender is required';
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -86,12 +93,16 @@ const PatientRegistration = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:8000/api/patients/register', {
-        ...formData,
-        date_of_birth: formData.date_of_birth.toISOString(),
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.post(
+        'https://mhcqms.onrender.com/patients/register',
+        {
+          ...formData,
+          date_of_birth: formData.date_of_birth.toISOString(),
+        },
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        }
+      );
 
       setRegistrationResult(response.data);
       setSuccess(true);
@@ -111,43 +122,46 @@ const PatientRegistration = () => {
       });
     } catch (error) {
       console.error('Registration error:', error);
-      setErrors({ submit: error.response?.data?.detail || 'Registration failed' });
+      setErrors({
+        submit: error.response?.data?.detail || 'Registration failed',
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({...prev, [field]: value}));
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
+      setErrors((prev) => ({...prev, [field]: ''}));
     }
   };
 
   const riskInfo = calculateRiskLevel();
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Typography variant="h4" component="h1" sx={{ mb: 4, fontWeight: 'bold' }}>
+    <Container maxWidth="lg" sx={{mt: 4}}>
+      <Typography variant="h4" component="h1" sx={{mb: 4, fontWeight: 'bold'}}>
         Patient Registration
       </Typography>
 
       {success && registrationResult && (
-        <Alert severity="success" sx={{ mb: 3 }}>
-          Patient registered successfully! Unique ID: {registrationResult.patient.unique_id}
+        <Alert severity="success" sx={{mb: 3}}>
+          Patient registered successfully! Unique ID:{' '}
+          {registrationResult.patient.unique_id}
         </Alert>
       )}
 
       {errors.submit && (
-        <Alert severity="error" sx={{ mb: 3 }}>
+        <Alert severity="error" sx={{mb: 3}}>
           {errors.submit}
         </Alert>
       )}
 
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 4 }}>
-            <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold' }}>
+          <Paper sx={{p: 4}}>
+            <Typography variant="h6" sx={{mb: 3, fontWeight: 'bold'}}>
               Patient Information
             </Typography>
 
@@ -199,8 +213,7 @@ const PatientRegistration = () => {
                     <Select
                       value={formData.gender}
                       onChange={(e) => handleChange('gender', e.target.value)}
-                      label="Gender"
-                    >
+                      label="Gender">
                       <MenuItem value="male">Male</MenuItem>
                       <MenuItem value="female">Female</MenuItem>
                       <MenuItem value="other">Other</MenuItem>
@@ -236,9 +249,9 @@ const PatientRegistration = () => {
                 </Grid>
               </Grid>
 
-              <Divider sx={{ my: 4 }} />
+              <Divider sx={{my: 4}} />
 
-              <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold' }}>
+              <Typography variant="h6" sx={{mb: 3, fontWeight: 'bold'}}>
                 Risk Factors Assessment
               </Typography>
 
@@ -248,7 +261,9 @@ const PatientRegistration = () => {
                     control={
                       <Checkbox
                         checked={formData.smoking}
-                        onChange={(e) => handleChange('smoking', e.target.checked)}
+                        onChange={(e) =>
+                          handleChange('smoking', e.target.checked)
+                        }
                       />
                     }
                     label="Smoking"
@@ -259,7 +274,9 @@ const PatientRegistration = () => {
                     control={
                       <Checkbox
                         checked={formData.diabetes}
-                        onChange={(e) => handleChange('diabetes', e.target.checked)}
+                        onChange={(e) =>
+                          handleChange('diabetes', e.target.checked)
+                        }
                       />
                     }
                     label="Diabetes"
@@ -270,7 +287,9 @@ const PatientRegistration = () => {
                     control={
                       <Checkbox
                         checked={formData.hypertension}
-                        onChange={(e) => handleChange('hypertension', e.target.checked)}
+                        onChange={(e) =>
+                          handleChange('hypertension', e.target.checked)
+                        }
                       />
                     }
                     label="Hypertension"
@@ -281,7 +300,9 @@ const PatientRegistration = () => {
                     control={
                       <Checkbox
                         checked={formData.obesity}
-                        onChange={(e) => handleChange('obesity', e.target.checked)}
+                        onChange={(e) =>
+                          handleChange('obesity', e.target.checked)
+                        }
                       />
                     }
                     label="Obesity"
@@ -292,7 +313,9 @@ const PatientRegistration = () => {
                     control={
                       <Checkbox
                         checked={formData.family_history}
-                        onChange={(e) => handleChange('family_history', e.target.checked)}
+                        onChange={(e) =>
+                          handleChange('family_history', e.target.checked)
+                        }
                       />
                     }
                     label="Family History"
@@ -300,7 +323,7 @@ const PatientRegistration = () => {
                 </Grid>
               </Grid>
 
-              <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Box sx={{mt: 3, display: 'flex', alignItems: 'center', gap: 2}}>
                 <Typography variant="body1">Risk Level:</Typography>
                 <Chip
                   label={riskInfo.level.toUpperCase()}
@@ -309,23 +332,26 @@ const PatientRegistration = () => {
                 />
               </Box>
 
-              <Box sx={{ mt: 4, display: 'flex', gap: 2 }}>
+              <Box sx={{mt: 4, display: 'flex', gap: 2}}>
                 <Button
                   type="submit"
                   variant="contained"
                   size="large"
                   disabled={loading}
-                  startIcon={loading ? <CircularProgress size={20} /> : <PersonAddIcon />}
+                  startIcon={
+                    loading ? <CircularProgress size={20} /> : <PersonAddIcon />
+                  }
                   sx={{
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    background:
+                      'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     '&:hover': {
-                      background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+                      background:
+                        'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
                     },
                     textTransform: 'none',
                     px: 4,
                     py: 1.5,
-                  }}
-                >
+                  }}>
                   {loading ? 'Registering...' : 'Register Patient'}
                 </Button>
               </Box>
@@ -334,16 +360,16 @@ const PatientRegistration = () => {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <Card sx={{ mb: 3 }}>
+          <Card sx={{mb: 3}}>
             <CardContent>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
-                <AssessmentIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+              <Typography variant="h6" sx={{mb: 2, fontWeight: 'bold'}}>
+                <AssessmentIcon sx={{mr: 1, verticalAlign: 'middle'}} />
                 Risk Assessment Guide
               </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              <Typography variant="body2" color="text.secondary" sx={{mb: 2}}>
                 The system automatically calculates risk level based on:
               </Typography>
-              <Box component="ul" sx={{ pl: 2, m: 0 }}>
+              <Box component="ul" sx={{pl: 2, m: 0}}>
                 <li>Age (40+ = +1, 60+ = +2)</li>
                 <li>Smoking (+2)</li>
                 <li>Diabetes (+2)</li>
@@ -351,11 +377,11 @@ const PatientRegistration = () => {
                 <li>Obesity (+1)</li>
                 <li>Family History (+1)</li>
               </Box>
-              <Box sx={{ mt: 2 }}>
-                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+              <Box sx={{mt: 2}}>
+                <Typography variant="body2" sx={{fontWeight: 'bold'}}>
                   Risk Levels:
                 </Typography>
-                <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
+                <Box sx={{display: 'flex', gap: 1, mt: 1}}>
                   <Chip label="LOW (0-2)" color="success" size="small" />
                   <Chip label="MEDIUM (3-4)" color="warning" size="small" />
                   <Chip label="HIGH (5+)" color="error" size="small" />
@@ -367,20 +393,23 @@ const PatientRegistration = () => {
           {registrationResult && (
             <Card>
               <CardContent>
-                <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
+                <Typography variant="h6" sx={{mb: 2, fontWeight: 'bold'}}>
                   Registration Summary
                 </Typography>
-                <Typography variant="body2" sx={{ mb: 1 }}>
-                  <strong>Patient ID:</strong> {registrationResult.patient.unique_id}
+                <Typography variant="body2" sx={{mb: 1}}>
+                  <strong>Patient ID:</strong>{' '}
+                  {registrationResult.patient.unique_id}
                 </Typography>
-                <Typography variant="body2" sx={{ mb: 1 }}>
-                  <strong>Name:</strong> {registrationResult.patient.first_name} {registrationResult.patient.last_name}
+                <Typography variant="body2" sx={{mb: 1}}>
+                  <strong>Name:</strong> {registrationResult.patient.first_name}{' '}
+                  {registrationResult.patient.last_name}
                 </Typography>
-                <Typography variant="body2" sx={{ mb: 1 }}>
+                <Typography variant="body2" sx={{mb: 1}}>
                   <strong>Risk Level:</strong> {registrationResult.risk_level}
                 </Typography>
-                <Typography variant="body2" sx={{ mb: 2 }}>
-                  <strong>Tests Assigned:</strong> {registrationResult.assigned_tests.length}
+                <Typography variant="body2" sx={{mb: 2}}>
+                  <strong>Tests Assigned:</strong>{' '}
+                  {registrationResult.assigned_tests.length}
                 </Typography>
                 <Typography variant="body2" color="success.main">
                   {registrationResult.message}

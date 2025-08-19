@@ -1,34 +1,42 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'https://mhcqms.onrender.com';
 
 export const registerPatient = createAsyncThunk(
   'patients/register',
-  async (patientData, { rejectWithValue }) => {
+  async (patientData, {rejectWithValue}) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${API_BASE_URL}/patients/register`, patientData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.post(
+        `${API_BASE_URL}/patients/register`,
+        patientData,
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        }
+      );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.detail || 'Registration failed');
+      return rejectWithValue(
+        error.response?.data?.detail || 'Registration failed'
+      );
     }
   }
 );
 
 export const fetchPatients = createAsyncThunk(
   'patients/fetchPatients',
-  async (_, { rejectWithValue }) => {
+  async (_, {rejectWithValue}) => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_BASE_URL}/patients/`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {Authorization: `Bearer ${token}`},
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.detail || 'Failed to fetch patients');
+      return rejectWithValue(
+        error.response?.data?.detail || 'Failed to fetch patients'
+      );
     }
   }
 );
@@ -80,5 +88,5 @@ const patientSlice = createSlice({
   },
 });
 
-export const { clearError, clearRegistrationResult } = patientSlice.actions;
+export const {clearError, clearRegistrationResult} = patientSlice.actions;
 export default patientSlice.reducer;

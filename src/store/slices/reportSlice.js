@@ -1,50 +1,65 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'https://mhcqms.onrender.com';
 
 export const generateReport = createAsyncThunk(
   'reports/generate',
-  async (reportParams, { rejectWithValue }) => {
+  async (reportParams, {rejectWithValue}) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${API_BASE_URL}/reports/patient-completion`, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: reportParams
-      });
+      const response = await axios.get(
+        `${API_BASE_URL}/reports/patient-completion`,
+        {
+          headers: {Authorization: `Bearer ${token}`},
+          params: reportParams,
+        }
+      );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.detail || 'Failed to generate report');
+      return rejectWithValue(
+        error.response?.data?.detail || 'Failed to generate report'
+      );
     }
   }
 );
 
 export const fetchPerformanceMetrics = createAsyncThunk(
   'reports/fetchMetrics',
-  async (_, { rejectWithValue }) => {
+  async (_, {rejectWithValue}) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${API_BASE_URL}/reports/performance-metrics`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.get(
+        `${API_BASE_URL}/reports/performance-metrics`,
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        }
+      );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.detail || 'Failed to fetch metrics');
+      return rejectWithValue(
+        error.response?.data?.detail || 'Failed to fetch metrics'
+      );
     }
   }
 );
 
 export const fetchDepartmentEfficiency = createAsyncThunk(
   'reports/fetchEfficiency',
-  async (_, { rejectWithValue }) => {
+  async (_, {rejectWithValue}) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${API_BASE_URL}/reports/department-efficiency`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.get(
+        `${API_BASE_URL}/reports/department-efficiency`,
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        }
+      );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.detail || 'Failed to fetch efficiency data');
+      return rejectWithValue(
+        error.response?.data?.detail || 'Failed to fetch efficiency data'
+      );
     }
   }
 );
@@ -92,5 +107,5 @@ const reportSlice = createSlice({
   },
 });
 
-export const { clearError, clearReportData } = reportSlice.actions;
+export const {clearError, clearReportData} = reportSlice.actions;
 export default reportSlice.reducer;

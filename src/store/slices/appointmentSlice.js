@@ -1,13 +1,16 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'https://mhcqms.onrender.com';
 
 export const accessAppointmentPortal = createAsyncThunk(
   'appointments/accessPortal',
-  async (accessData, { rejectWithValue }) => {
+  async (accessData, {rejectWithValue}) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/appointments/access-portal`, accessData);
+      const response = await axios.post(
+        `${API_BASE_URL}/appointments/access-portal`,
+        accessData
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.detail || 'Access denied');
@@ -17,31 +20,39 @@ export const accessAppointmentPortal = createAsyncThunk(
 
 export const createAppointment = createAsyncThunk(
   'appointments/create',
-  async (appointmentData, { rejectWithValue }) => {
+  async (appointmentData, {rejectWithValue}) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${API_BASE_URL}/appointments/create`, appointmentData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.post(
+        `${API_BASE_URL}/appointments/create`,
+        appointmentData,
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        }
+      );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.detail || 'Failed to create appointment');
+      return rejectWithValue(
+        error.response?.data?.detail || 'Failed to create appointment'
+      );
     }
   }
 );
 
 export const fetchAppointments = createAsyncThunk(
   'appointments/fetch',
-  async (params, { rejectWithValue }) => {
+  async (params, {rejectWithValue}) => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_BASE_URL}/appointments/`, {
-        headers: { Authorization: `Bearer ${token}` },
-        params
+        headers: {Authorization: `Bearer ${token}`},
+        params,
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.detail || 'Failed to fetch appointments');
+      return rejectWithValue(
+        error.response?.data?.detail || 'Failed to fetch appointments'
+      );
     }
   }
 );
@@ -91,5 +102,5 @@ const appointmentSlice = createSlice({
   },
 });
 
-export const { clearError, clearAppointmentData } = appointmentSlice.actions;
+export const {clearError, clearAppointmentData} = appointmentSlice.actions;
 export default appointmentSlice.reducer;

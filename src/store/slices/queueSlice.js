@@ -1,50 +1,60 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'https://mhcqms.onrender.com';
 
 export const fetchQueueStatus = createAsyncThunk(
   'queue/fetchStatus',
-  async (departmentId, { rejectWithValue }) => {
+  async (departmentId, {rejectWithValue}) => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_BASE_URL}/queue/status`, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { department_id: departmentId || undefined }
+        headers: {Authorization: `Bearer ${token}`},
+        params: {department_id: departmentId || undefined},
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.detail || 'Failed to fetch queue status');
+      return rejectWithValue(
+        error.response?.data?.detail || 'Failed to fetch queue status'
+      );
     }
   }
 );
 
 export const updateTestStatus = createAsyncThunk(
   'queue/updateStatus',
-  async (updateData, { rejectWithValue }) => {
+  async (updateData, {rejectWithValue}) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(`${API_BASE_URL}/queue/update-status`, updateData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.put(
+        `${API_BASE_URL}/queue/update-status`,
+        updateData,
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        }
+      );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.detail || 'Failed to update status');
+      return rejectWithValue(
+        error.response?.data?.detail || 'Failed to update status'
+      );
     }
   }
 );
 
 export const fetchQueueMetrics = createAsyncThunk(
   'queue/fetchMetrics',
-  async (_, { rejectWithValue }) => {
+  async (_, {rejectWithValue}) => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_BASE_URL}/queue/metrics`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {Authorization: `Bearer ${token}`},
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.detail || 'Failed to fetch metrics');
+      return rejectWithValue(
+        error.response?.data?.detail || 'Failed to fetch metrics'
+      );
     }
   }
 );
@@ -93,5 +103,5 @@ const queueSlice = createSlice({
   },
 });
 
-export const { clearError, clearQueueData } = queueSlice.actions;
+export const {clearError, clearQueueData} = queueSlice.actions;
 export default queueSlice.reducer;

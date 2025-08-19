@@ -1,16 +1,16 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'https://mhcqms.onrender.com';
 
 export const login = createAsyncThunk(
   'auth/login',
-  async (credentials, { rejectWithValue }) => {
+  async (credentials, {rejectWithValue}) => {
     try {
       const formData = new FormData();
       formData.append('username', credentials.username);
       formData.append('password', credentials.password);
-      
+
       const response = await axios.post(`${API_BASE_URL}/auth/login`, formData);
       localStorage.setItem('token', response.data.access_token);
       return response.data;
@@ -20,29 +20,28 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk(
-  'auth/logout',
-  async () => {
-    localStorage.removeItem('token');
-    return null;
-  }
-);
+export const logout = createAsyncThunk('auth/logout', async () => {
+  localStorage.removeItem('token');
+  return null;
+});
 
 export const getCurrentUser = createAsyncThunk(
   'auth/getCurrentUser',
-  async (_, { rejectWithValue, getState }) => {
+  async (_, {rejectWithValue, getState}) => {
     try {
-      const { token } = getState().auth;
+      const {token} = getState().auth;
       if (!token) {
         throw new Error('No token available');
       }
-      
+
       const response = await axios.get(`${API_BASE_URL}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {Authorization: `Bearer ${token}`},
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.detail || 'Failed to get user info');
+      return rejectWithValue(
+        error.response?.data?.detail || 'Failed to get user info'
+      );
     }
   }
 );
@@ -99,5 +98,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearError } = authSlice.actions;
+export const {clearError} = authSlice.actions;
 export default authSlice.reducer;
