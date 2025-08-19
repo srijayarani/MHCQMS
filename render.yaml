@@ -27,7 +27,8 @@ services:
     env: static
     plan: free
     buildCommand: npm install && npm run build
-    staticPublishPath: ./build
+    staticPublishPath: build
+    rootDir: .
     envVars:
       - key: REACT_APP_API_URL
         value: https://mhcqms.onrender.com/api
