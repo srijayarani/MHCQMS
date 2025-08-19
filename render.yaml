@@ -26,9 +26,12 @@ services:
     name: mhcqms-frontend
     env: static
     plan: free
-    buildCommand: npm install && npm run build
+    buildCommand: |
+      npm ci
+      npm run build
     staticPublishPath: build
     rootDir: .
+    pullRequestPreviewsEnabled: false
     envVars:
       - key: REACT_APP_API_URL
         value: https://mhcqms.onrender.com/api
