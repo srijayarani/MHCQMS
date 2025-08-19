@@ -67,7 +67,7 @@ const AppointmentPortal = () => {
     setSuccessMessage('');
     try {
       const response = await axios.post(
-        'https://mhcqms.onrender.com/appointments/access-portal',
+        'https://mhcqms.onrender.com/api/appointments/access-portal',
         {
           unique_id: searchData.unique_id,
           date_of_birth: searchData.date_of_birth.toISOString().split('T')[0],
@@ -89,7 +89,7 @@ const AppointmentPortal = () => {
     try {
       const [roomsRes] = await Promise.all([
         axios.get(
-          'https://mhcqms.onrender.com/appointments/patient/available-rooms'
+          'https://mhcqms.onrender.com/api/appointments/patient/available-rooms'
         ),
       ]);
       setRooms(roomsRes.data);
@@ -103,7 +103,7 @@ const AppointmentPortal = () => {
   const createAppointment = async () => {
     try {
       await axios.post(
-        'https://mhcqms.onrender.com/appointments/patient/schedule',
+        'https://mhcqms.onrender.com/api/appointments/patient/schedule',
         {
           unique_id: searchData.unique_id,
           date_of_birth: searchData.date_of_birth.toISOString().split('T')[0],

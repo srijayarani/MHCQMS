@@ -62,10 +62,10 @@ const QueueManagement = () => {
     try {
       const token = localStorage.getItem('token');
       const [deptRes, roomsRes] = await Promise.all([
-        axios.get('https://mhcqms.onrender.com/queue/departments', {
+        axios.get('https://mhcqms.onrender.com/api/queue/departments', {
           headers: {Authorization: `Bearer ${token}`},
         }),
-        axios.get('https://mhcqms.onrender.com/queue/rooms', {
+        axios.get('https://mhcqms.onrender.com/api/queue/rooms', {
           headers: {Authorization: `Bearer ${token}`},
         }),
       ]);
@@ -82,7 +82,7 @@ const QueueManagement = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        'https://mhcqms.onrender.com/queue/status',
+        'https://mhcqms.onrender.com/api/queue/status',
         {
           headers: {Authorization: `Bearer ${token}`},
           params: {department_id: selectedDepartment || undefined},
@@ -100,7 +100,7 @@ const QueueManagement = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.put(
-        'https://mhcqms.onrender.com/queue/update-status',
+        'https://mhcqms.onrender.com/api/queue/update-status',
         {
           patient_test_id: updateDialog.patientTest.id,
           status: updateData.status,

@@ -94,7 +94,7 @@ const PatientRegistration = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'https://mhcqms.onrender.com/patients/register',
+        'https://mhcqms.onrender.com/api/patients/register',
         {
           ...formData,
           date_of_birth: formData.date_of_birth.toISOString(),

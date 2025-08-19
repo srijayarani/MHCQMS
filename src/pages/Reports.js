@@ -57,15 +57,21 @@ const Reports = () => {
     try {
       const token = localStorage.getItem('token');
       const [deptRes, metricsRes, efficiencyRes] = await Promise.all([
-        axios.get('https://mhcqms.onrender.com/queue/departments', {
+        axios.get('https://mhcqms.onrender.com/api/queue/departments', {
           headers: {Authorization: `Bearer ${token}`},
         }),
-        axios.get('https://mhcqms.onrender.com/reports/performance-metrics', {
-          headers: {Authorization: `Bearer ${token}`},
-        }),
-        axios.get('https://mhcqms.onrender.com/reports/department-efficiency', {
-          headers: {Authorization: `Bearer ${token}`},
-        }),
+        axios.get(
+          'https://mhcqms.onrender.com/api/reports/performance-metrics',
+          {
+            headers: {Authorization: `Bearer ${token}`},
+          }
+        ),
+        axios.get(
+          'https://mhcqms.onrender.com/api/reports/department-efficiency',
+          {
+            headers: {Authorization: `Bearer ${token}`},
+          }
+        ),
       ]);
 
       setDepartments(deptRes.data);
@@ -81,7 +87,7 @@ const Reports = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        'https://mhcqms.onrender.com/reports/patient-completion',
+        'https://mhcqms.onrender.com/api/reports/patient-completion',
         {
           headers: {Authorization: `Bearer ${token}`},
           params: {
@@ -103,7 +109,7 @@ const Reports = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'https://mhcqms.onrender.com/reports/export',
+        'https://mhcqms.onrender.com/api/reports/export',
         {
           start_date: startDate.toISOString(),
           end_date: endDate.toISOString(),
@@ -135,7 +141,7 @@ const Reports = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        'https://mhcqms.onrender.com/reports/daily-summary',
+        'https://mhcqms.onrender.com/api/reports/daily-summary',
         {
           headers: {Authorization: `Bearer ${token}`},
           params: {date: new Date().toISOString().split('T')[0]},

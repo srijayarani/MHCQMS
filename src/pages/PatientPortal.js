@@ -60,7 +60,7 @@ const PatientPortal = () => {
     setError('');
     try {
       const response = await axios.post(
-        'https://mhcqms.onrender.com/appointments/patient-portal',
+        'https://mhcqms.onrender.com/api/appointments/patient-portal',
         {
           unique_id: searchData.unique_id,
           date_of_birth: searchData.date_of_birth.toISOString().split('T')[0],

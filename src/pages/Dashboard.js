@@ -47,10 +47,13 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem('token');
       const [metricsRes, queueRes] = await Promise.all([
-        axios.get('https://mhcqms.onrender.com/reports/performance-metrics', {
-          headers: {Authorization: `Bearer ${token}`},
-        }),
-        axios.get('https://mhcqms.onrender.com/queue/metrics', {
+        axios.get(
+          'https://mhcqms.onrender.com/api/reports/performance-metrics',
+          {
+            headers: {Authorization: `Bearer ${token}`},
+          }
+        ),
+        axios.get('https://mhcqms.onrender.com/api/queue/metrics', {
           headers: {Authorization: `Bearer ${token}`},
         }),
       ]);

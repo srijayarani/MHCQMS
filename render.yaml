@@ -30,4 +30,4 @@ services:
     staticPublishPath: ./build
     envVars:
       - key: REACT_APP_API_URL
-        value: https://mhcqms.onrender.com
+        value: https://mhcqms.onrender.com/api
