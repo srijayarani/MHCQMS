@@ -1,14 +1,13 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
-
-const API_BASE_URL = 'https://mhcqms.onrender.com';
+import {getApiUrl} from '../../config/api';
 
 export const accessAppointmentPortal = createAsyncThunk(
   'appointments/accessPortal',
   async (accessData, {rejectWithValue}) => {
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/appointments/access-portal`,
+        getApiUrl('/appointments/access-portal'),
         accessData
       );
       return response.data;
@@ -24,7 +23,7 @@ export const createAppointment = createAsyncThunk(
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        `${API_BASE_URL}/appointments/create`,
+        getApiUrl('/appointments/create'),
         appointmentData,
         {
           headers: {Authorization: `Bearer ${token}`},
@@ -44,7 +43,7 @@ export const fetchAppointments = createAsyncThunk(
   async (params, {rejectWithValue}) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${API_BASE_URL}/appointments/`, {
+      const response = await axios.get(getApiUrl('/appointments/'), {
         headers: {Authorization: `Bearer ${token}`},
         params,
       });

@@ -1,7 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
-
-const API_BASE_URL = 'https://mhcqms.onrender.com';
+import {getApiUrl} from '../../config/api';
 
 export const login = createAsyncThunk(
   'auth/login',
@@ -11,7 +10,7 @@ export const login = createAsyncThunk(
       formData.append('username', credentials.username);
       formData.append('password', credentials.password);
 
-      const response = await axios.post(`${API_BASE_URL}/auth/login`, formData);
+      const response = await axios.post(getApiUrl('/auth/login'), formData);
       localStorage.setItem('token', response.data.access_token);
       return response.data;
     } catch (error) {
@@ -34,7 +33,7 @@ export const getCurrentUser = createAsyncThunk(
         throw new Error('No token available');
       }
 
-      const response = await axios.get(`${API_BASE_URL}/auth/me`, {
+      const response = await axios.get(getApiUrl('/auth/me'), {
         headers: {Authorization: `Bearer ${token}`},
       });
       return response.data;

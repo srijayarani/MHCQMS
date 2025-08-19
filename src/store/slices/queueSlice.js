@@ -1,14 +1,13 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
-
-const API_BASE_URL = 'https://mhcqms.onrender.com';
+import {getApiUrl} from '../../config/api';
 
 export const fetchQueueStatus = createAsyncThunk(
   'queue/fetchStatus',
   async (departmentId, {rejectWithValue}) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${API_BASE_URL}/queue/status`, {
+      const response = await axios.get(getApiUrl('/queue/status'), {
         headers: {Authorization: `Bearer ${token}`},
         params: {department_id: departmentId || undefined},
       });
@@ -27,7 +26,7 @@ export const updateTestStatus = createAsyncThunk(
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `${API_BASE_URL}/queue/update-status`,
+        getApiUrl('/queue/update-status'),
         updateData,
         {
           headers: {Authorization: `Bearer ${token}`},
@@ -47,7 +46,7 @@ export const fetchQueueMetrics = createAsyncThunk(
   async (_, {rejectWithValue}) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${API_BASE_URL}/queue/metrics`, {
+      const response = await axios.get(getApiUrl('/queue/metrics'), {
         headers: {Authorization: `Bearer ${token}`},
       });
       return response.data;

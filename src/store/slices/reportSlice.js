@@ -1,7 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
-
-const API_BASE_URL = 'https://mhcqms.onrender.com';
+import {getApiUrl} from '../../config/api';
 
 export const generateReport = createAsyncThunk(
   'reports/generate',
@@ -9,7 +8,7 @@ export const generateReport = createAsyncThunk(
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `${API_BASE_URL}/reports/patient-completion`,
+        getApiUrl('/reports/patient-completion'),
         {
           headers: {Authorization: `Bearer ${token}`},
           params: reportParams,
@@ -30,7 +29,7 @@ export const fetchPerformanceMetrics = createAsyncThunk(
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `${API_BASE_URL}/reports/performance-metrics`,
+        getApiUrl('/reports/performance-metrics'),
         {
           headers: {Authorization: `Bearer ${token}`},
         }
@@ -50,7 +49,7 @@ export const fetchDepartmentEfficiency = createAsyncThunk(
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `${API_BASE_URL}/reports/department-efficiency`,
+        getApiUrl('/reports/department-efficiency'),
         {
           headers: {Authorization: `Bearer ${token}`},
         }
