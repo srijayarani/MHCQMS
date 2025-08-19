@@ -1,0 +1,19 @@
+@echo off
+echo Starting Healthcare Queue Management System...
+echo.
+echo Starting Backend Server...
+start "Backend Server" cmd /k "cd backend && pip install -r requirements.txt && python init_db.py && python main.py"
+echo.
+echo Waiting for backend to start...
+timeout /t 10 /nobreak >nul
+echo.
+echo Starting Frontend Server...
+start "Frontend Server" cmd /k "cd frontend && npm install && npm start"
+echo.
+echo System is starting up...
+echo Backend will be available at: http://localhost:8000
+echo Frontend will be available at: http://localhost:3000
+echo.
+echo Press any key to open the application...
+pause >nul
+start http://localhost:3000
