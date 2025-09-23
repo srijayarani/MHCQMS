@@ -7,9 +7,16 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 import os
 
-load_dotenv("config.env")
+# Load environment variables from config.env if it exists (for local development)
+# In production, environment variables should be set directly
+config_path = "config.env"
+if os.path.exists(config_path):
+    load_dotenv(config_path)
 
 SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY environment variable is not set")
+
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 

@@ -9,7 +9,11 @@ from datetime import timedelta
 from dotenv import load_dotenv
 import os
 
-load_dotenv("config.env")
+# Load environment variables from config.env if it exists (for local development)
+# In production, environment variables should be set directly
+config_path = "config.env"
+if os.path.exists(config_path):
+    load_dotenv(config_path)
 
 router = APIRouter()
 

@@ -4,9 +4,16 @@ from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
 
-load_dotenv("../config.env")
+# Load environment variables from config.env if it exists (for local development)
+# In production, environment variables should be set directly
+config_path = "../config.env"
+if os.path.exists(config_path):
+    load_dotenv(config_path)
 
 DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL environment variable is not set")
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

@@ -10,7 +10,11 @@ from database import engine, Base
 from routers import auth, patients, queue, reports, appointments
 from services.auth_service import verify_token
 
-load_dotenv("config.env")
+# Load environment variables from config.env if it exists (for local development)
+# In production, environment variables should be set directly
+config_path = "config.env"
+if os.path.exists(config_path):
+    load_dotenv(config_path)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
