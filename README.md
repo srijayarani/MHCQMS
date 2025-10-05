@@ -40,13 +40,13 @@ A comprehensive, enterprise-grade healthcare queue management system built with 
 1. **Clone the repository**
 ```bash
 git clone <repository-url>
-cd MHCQMS
+cd MHCQMS-main
 ```
 
 2. **Install Python dependencies**
 ```bash
 cd backend
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 3. **Configure environment**
