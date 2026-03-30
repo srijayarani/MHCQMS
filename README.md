@@ -12,7 +12,7 @@ A comprehensive, enterprise-grade healthcare queue management system built with 
 - **Performance Monitoring** with efficiency metrics and insights
 - **Patient Appointment Portal** for self-service access
 
-### 🔧 Technical Features
+# 🔧 Technical Features
 - **41 API Endpoints** covering all system functionality
 - **JWT Authentication** with secure token management
 - **Real-time Updates** with auto-refresh capabilities
